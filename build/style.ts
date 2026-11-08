@@ -4,9 +4,9 @@ import type { LayerSpecification, StyleSpecification } from '@maplibre/maplibre-
 import { osmColors } from './palette.ts';
 import { applyOverrides } from './overrides.ts';
 import { poiLayers } from './pois.ts';
-import { areaLayers, roadLayers } from './roads.ts';
+import { areaLayers, onewayLayer, roadLayers } from './roads.ts';
 
-const { belowStreets, belowSymbols } = osm.slots;
+const { belowStreets, belowSymbols, belowLabels } = osm.slots;
 
 /** POIs are drawn under place names but above every other label, as in CyclOSM. */
 const POI_ANCHOR = 'label-place-neighbourhood';
@@ -31,6 +31,7 @@ export function assembleLayers(layers: LayerSpecification[]): LayerSpecification
 	const bridge = transport.filter((layer) => layer.id.startsWith('bridge-'));
 	const surface = transport.filter((layer) => !tunnel.includes(layer) && !bridge.includes(layer));
 
+	const labels = layers.findIndex((layer) => layer.id === belowLabels);
 	const anchor = layers.findIndex((layer) => layer.id === POI_ANCHOR);
 	if (anchor < end) throw new Error(`Layer ${POI_ANCHOR} not found: check the @versatiles/style version`);
 
@@ -43,7 +44,9 @@ export function assembleLayers(layers: LayerSpecification[]): LayerSpecification
 		...surface,
 		...roadLayers('bridge'),
 		...bridge,
-		...layers.slice(end, anchor),
+		...layers.slice(end, labels),
+		onewayLayer(),
+		...layers.slice(labels, anchor),
 		...poiLayers(),
 		...layers.slice(anchor),
 	];

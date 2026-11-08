@@ -398,6 +398,27 @@ export function roadLayers(level: Level): Layer[] {
 	return [casing, fill, ...roadSurfaceLayers(level), ...wayLayers(level)];
 }
 
+/** One-way arrows, from raster zoom 15. They use the arrow of the VersaTiles sprite, pinned with the package. */
+export function onewayLayer(): Layer {
+	return {
+		id: 'cyclo-oneway',
+		type: 'symbol',
+		source: SOURCE,
+		'source-layer': 'streets',
+		minzoom: 14,
+		filter: ['all', ['==', get('oneway'), true], kindIn([...ROAD_KINDS, 'path', 'cycleway', 'track'])],
+		layout: {
+			'icon-image': 'base:marking-oneway',
+			'icon-size': 0.4,
+			'icon-rotate': ['case', ['==', get('oneway_reverse'), true], -90, 90],
+			'icon-rotation-alignment': 'map',
+			'symbol-placement': 'line',
+			'symbol-spacing': 100,
+		},
+		paint: { 'icon-color': ['match', get('kind'), ['path', 'cycleway'], '#ddddff', '#777777'] },
+	} as unknown as Layer;
+}
+
 /** Areas that `layers.roads: false` removes from the VersaTiles style: bridge decks and pedestrian zones. */
 export function areaLayers(): Layer[] {
 	return [
