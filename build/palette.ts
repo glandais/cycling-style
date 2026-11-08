@@ -36,12 +36,12 @@ export const palette = {
 /** Road and path colours from road-colors.mss. */
 export const roadColors = {
 	cycle: '#62ff96', // our choice: CyclOSM uses #0000ce
-	mixedCycle: '#0060ff',
+	mixedCycle: '#16a34a', // our choice: CyclOSM uses #0060ff
 	path: '#007360',
 	footway: '#7a5b36',
 	track: '#114021',
 	cycleTunnel: '#b1ffcb',
-	mixedCycleTunnel: '#4d90ff', // derived: lighten(mixedCycle, 15%)
+	mixedCycleTunnel: '#6fc794',
 	pathTunnel: '#00c0a0', // derived: lighten(path, 15%)
 	footwayTunnel: '#dcc3a6',
 	noBicycle: '#d4d4d4',

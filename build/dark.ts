@@ -46,11 +46,11 @@ const DARK_COLORS: Record<string, string> = {
 	'#ddddff': '#9aa4c0',
 	// Cycle network and paths
 	'#0000ce': '#4f8dff',
-	'#0060ff': '#4fc6ff',
+	'#16a34a': '#237a49',
 	'#007360': '#2fbf9f',
 	'#7a5b36': '#b08d63',
 	'#114021': '#86c08c',
-	'#4d90ff': '#2f7fa8',
+	'#6fc794': '#1a5a36',
 	'#00c0a0': '#1f7f6a',
 	'#dcc3a6': '#6e5a44',
 	'#0a8a3a': '#14532d',
