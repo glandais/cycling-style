@@ -3,11 +3,10 @@ import { Map as MapLibreMap, NavigationControl, type StyleSpecification } from '
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { loadCyclingStyle } from './cycling-style.ts';
 
-const CYCLING = 'cycling-style';
-const CYCLING_DARK = 'cycling-style-dark';
+const CYCLING = ['cycling-style', 'cycling-style-dark', 'cycling-style-road', 'cycling-style-road-dark'];
 
 function loadStyle(name: string): Promise<StyleSpecification> {
-	if (name === CYCLING || name === CYCLING_DARK) return loadCyclingStyle(name === CYCLING_DARK);
+	if (CYCLING.includes(name)) return loadCyclingStyle(name);
 	return inlineSources(
 		osm({
 			theme: name as (typeof osm.palettes)[number],
@@ -27,11 +26,11 @@ const addGroup = (label: string, names: readonly string[]) => {
 	group.append(...names.map((name) => new Option(name, name)));
 	picker.append(group);
 };
-addGroup('Cycling', [CYCLING, CYCLING_DARK]);
+addGroup('Cycling', CYCLING);
 addGroup('VersaTiles', osm.palettes);
 
 const requested = new URLSearchParams(location.search).get('style');
-picker.value = requested && [CYCLING, CYCLING_DARK, ...osm.palettes].includes(requested as never) ? requested : CYCLING;
+picker.value = requested && [...CYCLING, ...osm.palettes].includes(requested as never) ? requested : CYCLING[0];
 
 const map = new MapLibreMap({
 	container: 'map',

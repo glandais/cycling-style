@@ -14,7 +14,14 @@ The style is published at:
 https://glandais.github.io/cycling-style/style.json
 ```
 
-A dark variant is available at `https://glandais.github.io/cycling-style/style-dark.json`.
+Other variants are published next to it:
+
+| Variant             | File                   | Description                                 |
+| ------------------- | ---------------------- | ------------------------------------------- |
+| Default             | `style.json`           | All cycling infrastructure                  |
+| Dark                | `style-dark.json`      | Same map on a dark background               |
+| Road cycling        | `style-road.json`      | Roads only: paths and tracks barely visible |
+| Road cycling (dark) | `style-road-dark.json` | Road cycling on a dark background           |
 
 Pass one of these URLs to MapLibre GL JS 5.5 or later. Tiles, fonts and base sprites are served by
 `tiles.versatiles.org`, so no API key is needed.

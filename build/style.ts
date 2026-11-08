@@ -6,6 +6,7 @@ import { osmColors } from './palette.ts';
 import { applyOverrides } from './overrides.ts';
 import { insertPatterns } from './patterns.ts';
 import { poiLayers } from './pois.ts';
+import { toRoadStyle } from './road.ts';
 import { areaLayers, onewayLayer, roadLayers } from './roads.ts';
 
 const { belowStreets, belowSymbols, belowLabels } = osm.slots;
@@ -87,5 +88,8 @@ if (import.meta.main) {
 	const style = await buildStyle();
 	await writeFile('public/style.json', JSON.stringify(style));
 	await writeFile('public/style-dark.json', JSON.stringify(buildDarkStyle(style)));
-	console.log('Wrote public/style.json and public/style-dark.json');
+	const road = toRoadStyle(style);
+	await writeFile('public/style-road.json', JSON.stringify(road));
+	await writeFile('public/style-road-dark.json', JSON.stringify({ ...buildDarkStyle(road), name: 'cycling-style-road-dark' }));
+	console.log('Wrote the four style variants to public/');
 }

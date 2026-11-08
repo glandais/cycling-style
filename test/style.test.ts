@@ -4,6 +4,7 @@ import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import { osm } from '@versatiles/style';
 import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { PATCHED_LAYER_IDS } from '../build/overrides.ts';
+import { toRoadStyle, WAY_OPACITY } from '../build/road.ts';
 import { buildDarkStyle, buildStyle } from '../build/style.ts';
 
 let style: StyleSpecification;
@@ -77,5 +78,21 @@ describe('dark style', () => {
 		const light = Object.keys(JSON.parse(readFileSync('public/sprites/cyclo.json', 'utf8')));
 		const icons = Object.keys(JSON.parse(readFileSync('public/sprites/cyclo-dark.json', 'utf8')));
 		expect(icons.sort()).toEqual(light.sort());
+	});
+});
+
+describe('road cycling style', () => {
+	it('is valid', () => {
+		expect(validateStyleMin(toRoadStyle(style))).toEqual([]);
+	});
+
+	it('fades paths and tracks and leaves roads alone', () => {
+		const road = toRoadStyle(style);
+		const find = (id: string) => road.layers.find((layer) => layer.id === id)!;
+		for (const id of ['cyclo-surface-track', 'cyclo-surface-path', 'cyclo-surface-shared', 'cyclo-surface-cycleway', 'cyclo-surface-footway-mtb']) {
+			expect((find(id).paint as Record<string, unknown>)['line-opacity'], id).toBe(WAY_OPACITY);
+		}
+		expect(road.layers.some((layer) => layer.id.endsWith('-underlay'))).toBe(false);
+		expect(find('cyclo-surface-road-fill')).toEqual(style.layers.find((layer) => layer.id === 'cyclo-surface-road-fill'));
 	});
 });
