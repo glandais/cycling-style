@@ -4,7 +4,7 @@ import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import { osm } from '@versatiles/style';
 import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { PATCHED_LAYER_IDS } from '../build/overrides.ts';
-import { buildStyle } from '../build/style.ts';
+import { buildDarkStyle, buildStyle } from '../build/style.ts';
 
 let style: StyleSpecification;
 const indexOf = (id: string) => style.layers.findIndex((layer) => layer.id === id);
@@ -60,5 +60,22 @@ describe('generated style', () => {
 	it('contains no relief', () => {
 		expect(Object.values(style.sources).some((source) => source.type === 'raster-dem')).toBe(false);
 		expect(style.layers.some((layer) => layer.type === 'hillshade')).toBe(false);
+	});
+});
+
+describe('dark style', () => {
+	it('is valid and only differs in its colours', () => {
+		const dark = buildDarkStyle(style);
+		expect(validateStyleMin(dark)).toEqual([]);
+		expect(dark.layers.map((layer) => layer.id)).toEqual(style.layers.map((layer) => layer.id));
+	});
+
+	it('has a dark background and its own sprite', () => {
+		const dark = buildDarkStyle(style);
+		expect(JSON.stringify(dark.layers.map((layer) => layer.paint))).not.toMatch(/rgb\(238,229,220\)|#eee5dc/i);
+		expect(JSON.stringify(dark.sprite)).toContain('cyclo-dark');
+		const light = Object.keys(JSON.parse(readFileSync('public/sprites/cyclo.json', 'utf8')));
+		const icons = Object.keys(JSON.parse(readFileSync('public/sprites/cyclo-dark.json', 'utf8')));
+		expect(icons.sort()).toEqual(light.sort());
 	});
 });

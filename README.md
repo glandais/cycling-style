@@ -14,7 +14,9 @@ The style is published at:
 https://glandais.github.io/cycling-style/style.json
 ```
 
-Pass this URL to MapLibre GL JS 5.5 or later. Tiles, fonts and base sprites are served by
+A dark variant is available at `https://glandais.github.io/cycling-style/style-dark.json`.
+
+Pass one of these URLs to MapLibre GL JS 5.5 or later. Tiles, fonts and base sprites are served by
 `tiles.versatiles.org`, so no API key is needed.
 
 ```html
@@ -47,7 +49,7 @@ It is shown automatically by MapLibre's default attribution control.
 ### Self-hosting
 
 To host the style yourself, publish `public/` and generate `style.json` with the absolute URL of
-your copy of the sprite, without extension:
+your copy of the sprite, without extension (the dark style uses the same URL followed by `-dark`):
 
 ```sh
 SPRITE_URL=https://example.org/sprites/cyclo npm run build:style

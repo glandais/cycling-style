@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { promisify } from 'node:util';
 import potpack from 'potpack';
 import sharp from 'sharp';
+import { darkColor } from './dark.ts';
 import { ICONS, PATTERNS } from './sprite-manifest.ts';
 
 const ICON_SIZE = 14;
@@ -27,11 +28,11 @@ async function renderPattern(source: string, ratio: 1 | 2): Promise<{ input: Buf
 	return { input: data, width: info.width, height: info.height };
 }
 
-async function renderSheet(ratio: 1 | 2): Promise<void> {
+async function renderSheet(ratio: 1 | 2, dark: boolean): Promise<void> {
 	const size = ICON_SIZE * ratio;
 	const icons = await Promise.all(
 		ICONS.map(async ({ name, source, color }) => {
-			const svg = recolor(await readFile(source, 'utf8'), color);
+			const svg = recolor(await readFile(source, 'utf8'), dark ? darkColor(color)! : color);
 			// Rendered well above the target size, so that small icons are downscaled rather than blurred.
 			const input = await sharp(Buffer.from(svg), { density: 72 * 16 })
 				.resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
@@ -48,7 +49,7 @@ async function renderSheet(ratio: 1 | 2): Promise<void> {
 	);
 	const entries = [...icons, ...patterns];
 	const { w, h } = potpack(entries);
-	const suffix = ratio === 1 ? '' : '@2x';
+	const suffix = `${dark ? '-dark' : ''}${ratio === 1 ? '' : '@2x'}`;
 	const png = `public/sprites/cyclo${suffix}.png`;
 	await sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
 		.composite(entries.map(({ input, x, y }) => ({ input, left: x + PADDING, top: y + PADDING })))
@@ -62,5 +63,5 @@ async function renderSheet(ratio: 1 | 2): Promise<void> {
 }
 
 await mkdir('public/sprites', { recursive: true });
-await Promise.all([renderSheet(1), renderSheet(2)]);
+await Promise.all([renderSheet(1, false), renderSheet(2, false), renderSheet(1, true), renderSheet(2, true)]);
 console.log(`Wrote ${ICONS.length} icons and ${PATTERNS.length} patterns to public/sprites`);

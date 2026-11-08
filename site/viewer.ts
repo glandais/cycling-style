@@ -4,9 +4,10 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { loadCyclingStyle } from './cycling-style.ts';
 
 const CYCLING = 'cycling-style';
+const CYCLING_DARK = 'cycling-style-dark';
 
 function loadStyle(name: string): Promise<StyleSpecification> {
-	if (name === CYCLING) return loadCyclingStyle();
+	if (name === CYCLING || name === CYCLING_DARK) return loadCyclingStyle(name === CYCLING_DARK);
 	return inlineSources(
 		osm({
 			theme: name as (typeof osm.palettes)[number],
@@ -26,11 +27,11 @@ const addGroup = (label: string, names: readonly string[]) => {
 	group.append(...names.map((name) => new Option(name, name)));
 	picker.append(group);
 };
-addGroup('Cycling', [CYCLING]);
+addGroup('Cycling', [CYCLING, CYCLING_DARK]);
 addGroup('VersaTiles', osm.palettes);
 
 const requested = new URLSearchParams(location.search).get('style');
-picker.value = requested && [CYCLING, ...osm.palettes].includes(requested as never) ? requested : CYCLING;
+picker.value = requested && [CYCLING, CYCLING_DARK, ...osm.palettes].includes(requested as never) ? requested : CYCLING;
 
 const map = new MapLibreMap({
 	container: 'map',

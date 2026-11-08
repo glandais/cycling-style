@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { inlineSources, osm } from '@versatiles/style';
 import type { LayerSpecification, StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { toDarkStyle } from './dark.ts';
 import { osmColors } from './palette.ts';
 import { applyOverrides } from './overrides.ts';
 import { insertPatterns } from './patterns.ts';
@@ -76,8 +77,15 @@ export async function buildStyle(): Promise<StyleSpecification> {
 	return inlineSources(style);
 }
 
+/** Builds the dark variant from an already built light style. */
+export function buildDarkStyle(style: StyleSpecification): StyleSpecification {
+	return toDarkStyle(style, `${SPRITE_URL}-dark`);
+}
+
 if (import.meta.main) {
 	await mkdir('public', { recursive: true });
-	await writeFile('public/style.json', JSON.stringify(await buildStyle()));
-	console.log('Wrote public/style.json');
+	const style = await buildStyle();
+	await writeFile('public/style.json', JSON.stringify(style));
+	await writeFile('public/style-dark.json', JSON.stringify(buildDarkStyle(style)));
+	console.log('Wrote public/style.json and public/style-dark.json');
 }
