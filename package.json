@@ -10,7 +10,7 @@
     "sheets": "tsx build/sheets.ts",
     "dev": "vite",
     "site": "vite build",
-    "test": "vitest run",
+    "test": "vitest run --root .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

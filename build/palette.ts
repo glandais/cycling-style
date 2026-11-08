@@ -31,6 +31,40 @@ export const palette = {
 	labelWater: '#3a7ca5',
 } as const;
 
+/** Road and path colours from road-colors.mss. */
+export const roadColors = {
+	cycle: '#0000ce',
+	mixedCycle: '#0060ff',
+	path: '#007360',
+	footway: '#7a5b36',
+	track: '#114021',
+	cycleTunnel: '#4f4fff', // derived: lighten(cycle, 25%)
+	mixedCycleTunnel: '#4d90ff', // derived: lighten(mixedCycle, 15%)
+	pathTunnel: '#00c0a0', // derived: lighten(path, 15%)
+	footwayTunnel: '#dcc3a6',
+	noBicycle: '#d4d4d4',
+	motorway: '#d4d4d4',
+	motorwayCycle: '#f4c3c3',
+	motorwayCase: '#f6f6f6',
+	primary: '#f4dfc3',
+	primaryCase: '#d8b267',
+	secondary: '#f6f8d2',
+	secondaryCase: '#b1bb5d',
+	standard: '#f6f6f6',
+	standardCase: '#888888',
+	tertiaryCase: '#777777',
+	pedestrianCase: '#bbbbbb',
+	// CyclOSM colours these by maxspeed, which Shortbread lacks; the implied speed is used instead.
+	livingStreet: '#bbffba',
+	pedestrian: '#ddffba',
+	noMotor: '#62ff96',
+	bridgeCase: '#666666',
+	pedestrianArea: '#dce3e0',
+	cycleSurface: '#000068', // derived: darken(cycle, 20%)
+	roadSurfaceRough: '#c3c3c3',
+	roadSurfaceBad: '#dcdcdc',
+} as const;
+
 /** Colour overrides passed to `osm({ colors })`; keys are documented by `osm.colorKeys`. */
 export const osmColors = {
 	background: palette.land,

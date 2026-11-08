@@ -1,0 +1,45 @@
+import { beforeAll, describe, expect, it } from 'vitest';
+import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
+import { osm } from '@versatiles/style';
+import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { buildStyle } from '../build/style.ts';
+
+let style: StyleSpecification;
+const indexOf = (id: string) => style.layers.findIndex((layer) => layer.id === id);
+
+beforeAll(async () => {
+	style = await buildStyle();
+}, 30_000);
+
+describe('generated style', () => {
+	it('is valid', () => {
+		expect(validateStyleMin(style)).toEqual([]);
+	});
+
+	it('has unique layer ids', () => {
+		const ids = style.layers.map((layer) => layer.id);
+		expect(new Set(ids).size).toBe(ids.length);
+	});
+
+	it('keeps the VersaTiles slots', () => {
+		for (const slot of Object.values(osm.slots)) expect(indexOf(slot)).toBeGreaterThanOrEqual(0);
+	});
+
+	it('stacks tunnels, surface and bridges with railways in each level', () => {
+		const order = [
+			'cyclo-tunnel-road-fill',
+			'tunnel-transport-rail',
+			'cyclo-surface-road-fill',
+			'transport-rail',
+			'cyclo-bridge-road-fill',
+			'bridge-transport-rail',
+		].map(indexOf);
+		expect(order.every((index) => index >= 0)).toBe(true);
+		expect(order).toEqual([...order].sort((a, b) => a - b));
+	});
+
+	it('contains no relief', () => {
+		expect(Object.values(style.sources).some((source) => source.type === 'raster-dem')).toBe(false);
+		expect(style.layers.some((layer) => layer.type === 'hillshade')).toBe(false);
+	});
+});
