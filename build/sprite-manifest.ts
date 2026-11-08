@@ -47,3 +47,17 @@ export const ICONS: { name: string; source: string; color: string }[] = [
 	{ name: 'doctors', source: `${CARTO}/amenity/doctors.svg`, color: COLORS.health },
 	{ name: 'peak', source: `${CARTO}/natural/peak.svg`, color: COLORS.peak },
 ];
+
+/** Fill patterns of base.mss, kept in their original colours and at their original size. */
+export const PATTERNS: { name: string; source: string }[] = [
+	{ name: 'pattern_wetland', source: `${CARTO}/wetland.png` },
+	{ name: 'pattern_rock', source: `${CARTO}/rock_overlay.png` },
+	{ name: 'pattern_scree', source: `${CARTO}/scree_overlay.png` },
+	{ name: 'pattern_scrub', source: `${CARTO}/scrub.png` },
+	{ name: 'pattern_vineyard', source: `${CARTO}/vineyard.png` },
+	{ name: 'pattern_orchard', source: `${CARTO}/orchard.png` },
+	{ name: 'pattern_allotments', source: `${CARTO}/allotments.png` },
+	{ name: 'pattern_quarry', source: `${CARTO}/quarry.svg` },
+	{ name: 'pattern_cemetery', source: `${CARTO}/grave_yard_generic_many.svg` },
+	{ name: 'pattern_danger', source: `${CARTO}/danger_red_hatch.png` },
+];

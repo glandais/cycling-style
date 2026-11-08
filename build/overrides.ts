@@ -1,9 +1,10 @@
 import type { LayerSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { palette } from './palette.ts';
 
-type Patch = { paint?: Record<string, unknown>; layout?: Record<string, unknown>; minzoom?: number };
+type Patch = { paint?: Record<string, unknown>; layout?: Record<string, unknown>; minzoom?: number; filter?: unknown[] };
 
 const kind = ['get', 'kind'];
+const kindIn = (...kinds: string[]) => ['in', kind, ['literal', kinds]];
 
 /** [MapLibre zoom, size] pairs: the CyclOSM sizes of placenames.mss and labels.mss, shifted by one zoom. */
 const sizes = (...stops: [number, number][]) => ['interpolate', ['linear'], ['zoom'], ...stops.flat()];
@@ -36,9 +37,23 @@ const waterLabel: Patch = { layout: { 'text-font': ['noto_sans_regular_italic'] 
 const PATCHES: Record<string, Patch> = {
 	'land-grass': {
 		paint: {
-			'fill-color': ['match', kind, ['meadow', 'wet_meadow'], palette.meadow, palette.grass],
+			'fill-color': ['match', kind, 'meadow', palette.meadow, palette.grass],
 		},
 	},
+	'land-agriculture': {
+		paint: {
+			'fill-color': ['match', kind, ['orchard', 'vineyard', 'plant_nursery'], palette.meadow, palette.farmland],
+		},
+	},
+	// Brownfields have no VersaTiles layer; CyclOSM draws them like industrial land.
+	'land-industrial': {
+		filter: kindIn('industrial', 'quarry', 'railway', 'brownfield'),
+		paint: { 'fill-color': ['match', kind, 'quarry', palette.quarry, palette.industrial] },
+	},
+	// Canal areas have no VersaTiles layer.
+	'water-area-small': { filter: kindIn('reservoir', 'basin', 'dock', 'canal') },
+	// CyclOSM hatches danger areas instead of filling them: see patterns.ts.
+	'site-dangerarea': { paint: { 'fill-color': 'rgba(0,0,0,0)' } },
 	'land-park': { paint: { 'fill-color': palette.grass } },
 	'land-vegetation': {
 		paint: { 'fill-color': ['match', kind, 'heath', palette.heath, palette.scrub] },
@@ -80,10 +95,11 @@ export function applyOverrides(layers: LayerSpecification[]): LayerSpecification
 	return layers.map((layer) => {
 		const patch = PATCHES[layer.id];
 		if (!patch) return layer;
-		const { paint, layout, minzoom } = patch;
+		const { paint, layout, minzoom, filter } = patch;
 		return {
 			...layer,
 			...(minzoom === undefined ? {} : { minzoom }),
+			...(filter === undefined ? {} : { filter }),
 			paint: { ...layer.paint, ...paint },
 			layout: { ...layer.layout, ...layout },
 		} as LayerSpecification;

@@ -50,6 +50,13 @@ describe('generated style', () => {
 		expect([...used].sort()).toEqual([...sprite].sort());
 	});
 
+	it('draws every Shortbread area kind that CyclOSM styles', () => {
+		const fills = JSON.stringify(style.layers.filter((layer) => layer.type === 'fill'));
+		for (const kind of ['canal', 'brownfield', 'swamp', 'marsh', 'bog', 'orchard', 'vineyard', 'quarry', 'scree', 'danger_area']) {
+			expect(fills, kind).toContain(`"${kind}"`);
+		}
+	});
+
 	it('contains no relief', () => {
 		expect(Object.values(style.sources).some((source) => source.type === 'raster-dem')).toBe(false);
 		expect(style.layers.some((layer) => layer.type === 'hillshade')).toBe(false);

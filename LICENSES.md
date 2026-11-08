@@ -18,7 +18,7 @@ The generated layers build on [`@versatiles/style`](https://github.com/versatile
 
 ## Icons
 
-All icons in `public/sprites/` are recoloured from CC0 1.0 sources:
+All icons and fill patterns in `public/sprites/` come from CC0 1.0 sources (icons are recoloured):
 
 - `symbols/openstreetmap-carto` from CyclOSM.
 - `icons/` from `@versatiles/style` (Maki and VersaTiles sets).

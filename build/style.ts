@@ -3,6 +3,7 @@ import { inlineSources, osm } from '@versatiles/style';
 import type { LayerSpecification, StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { osmColors } from './palette.ts';
 import { applyOverrides } from './overrides.ts';
+import { insertPatterns } from './patterns.ts';
 import { poiLayers } from './pois.ts';
 import { areaLayers, onewayLayer, roadLayers } from './roads.ts';
 
@@ -71,7 +72,7 @@ export async function buildStyle(): Promise<StyleSpecification> {
 		},
 	});
 	style.name = 'cycling-style';
-	style.layers = assembleLayers(applyOverrides(style.layers));
+	style.layers = assembleLayers(insertPatterns(applyOverrides(style.layers)));
 	return inlineSources(style);
 }
 
