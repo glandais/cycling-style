@@ -2,6 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { inlineSources, osm } from '@versatiles/style';
 import type { LayerSpecification, StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { osmColors } from './palette.ts';
+import { applyOverrides } from './overrides.ts';
 import { areaLayers, roadLayers } from './roads.ts';
 
 const { belowStreets, belowSymbols } = osm.slots;
@@ -46,7 +47,7 @@ export async function buildStyle(): Promise<StyleSpecification> {
 		urls: { base: 'https://tiles.versatiles.org' },
 	});
 	style.name = 'cycling-style';
-	style.layers = assembleLayers(style.layers);
+	style.layers = assembleLayers(applyOverrides(style.layers));
 	return inlineSources(style);
 }
 

@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import { osm } from '@versatiles/style';
 import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { PATCHED_LAYER_IDS } from '../build/overrides.ts';
 import { buildStyle } from '../build/style.ts';
 
 let style: StyleSpecification;
@@ -36,6 +37,10 @@ describe('generated style', () => {
 		].map(indexOf);
 		expect(order.every((index) => index >= 0)).toBe(true);
 		expect(order).toEqual([...order].sort((a, b) => a - b));
+	});
+
+	it('finds every layer it patches', () => {
+		for (const id of PATCHED_LAYER_IDS) expect(indexOf(id), id).toBeGreaterThanOrEqual(0);
 	});
 
 	it('contains no relief', () => {
