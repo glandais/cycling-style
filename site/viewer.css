@@ -1,0 +1,7 @@
+html, body { height: 100%; margin: 0; font: 14px system-ui, sans-serif; }
+body { display: flex; flex-direction: column; }
+#banner { padding: 8px 12px; color: #fff; background: #0000ce; text-align: center; text-decoration: none; }
+#banner:hover { text-decoration: underline; }
+main { position: relative; flex: 1; min-height: 0; }
+main > #map { position: absolute; inset: 0; }
+#picker { position: absolute; z-index: 2; top: 10px; left: 10px; padding: 6px 8px; background: #fffe; border-radius: 4px; box-shadow: 0 0 0 2px #0000001a; }

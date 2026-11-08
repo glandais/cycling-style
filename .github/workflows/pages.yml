@@ -1,4 +1,4 @@
-name: Publish style
+name: Publish site
 
 on:
   push:
@@ -31,8 +31,9 @@ jobs:
       - run: npm run build:style
         env:
           SPRITE_URL: https://glandais.github.io/cycling-style/sprites/cyclo
+      - run: npm run site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: dist
       - id: deployment
         uses: actions/deploy-pages@v4

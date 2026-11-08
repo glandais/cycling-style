@@ -3,16 +3,21 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>CyclOSM / cycling-style</title>
+		<title>cycling-style</title>
 		<link rel="icon" href="data:," />
-		<link rel="stylesheet" href="./style.css" />
+		<link rel="stylesheet" href="./viewer.css" />
 	</head>
 	<body>
-		<nav id="presets" aria-label="Places"></nav>
+		<a id="banner" href="https://github.com/glandais/cycling-style">
+			<strong>cycling-style</strong> · a CyclOSM-inspired style for VersaTiles · View on GitHub →
+		</a>
 		<main>
-			<section><h2>CyclOSM</h2><div id="left" class="map"></div></section>
-			<section><h2>cycling-style</h2><div id="right" class="map"></div></section>
+			<div id="map"></div>
+			<label id="picker">
+				Style
+				<select id="style"></select>
+			</label>
 		</main>
-		<script type="module" src="./main.ts"></script>
+		<script type="module" src="./viewer.ts"></script>
 	</body>
 </html>

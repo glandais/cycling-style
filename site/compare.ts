@@ -1,5 +1,6 @@
 import { Map as MapLibreMap, type StyleSpecification } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { loadCyclingStyle } from './cycling-style.ts';
 
 type View = { center: [number, number]; zoom: number };
 
@@ -37,17 +38,6 @@ function writeHash(map: MapLibreMap): void {
 	history.replaceState(null, '', `#${map.getZoom().toFixed(2)}/${lat.toFixed(5)}/${lng.toFixed(5)}`);
 }
 
-/** Loads the generated style and points the local sprite at this page's own location. */
-async function loadStyle(): Promise<StyleSpecification> {
-	const style = (await (await fetch('style.json')).json()) as StyleSpecification;
-	if (Array.isArray(style.sprite)) {
-		style.sprite = style.sprite.map((sprite) =>
-			sprite.id === 'cyclo' ? { ...sprite, url: new URL('sprites/cyclo', location.href).href } : sprite
-		);
-	}
-	return style;
-}
-
 /** Mirrors every camera change of `source` onto `target`. */
 function follow(source: MapLibreMap, target: MapLibreMap, state: { active: MapLibreMap | null }): void {
 	source.on('move', () => {
@@ -61,7 +51,7 @@ function follow(source: MapLibreMap, target: MapLibreMap, state: { active: MapLi
 
 const view = readHash();
 const left = new MapLibreMap({ container: 'left', style: CYCLOSM, ...view, maxZoom: 20 });
-const right = new MapLibreMap({ container: 'right', style: await loadStyle(), ...view, maxZoom: 20 });
+const right = new MapLibreMap({ container: 'right', style: await loadCyclingStyle(), ...view, maxZoom: 20 });
 const syncState: { active: MapLibreMap | null } = { active: null };
 follow(left, right, syncState);
 follow(right, left, syncState);
