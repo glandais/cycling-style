@@ -22,6 +22,9 @@ the absolute URL of the sprite, without extension:
 SPRITE_URL=https://example.org/sprites/cyclo npm run build:style
 ```
 
+Pushes to `develop` publish `public/` to GitHub Pages, with the style available at
+<https://glandais.github.io/cycling-style/style.json>.
+
 The style only uses data available in Shortbread 1.1. On-road cycle lanes, cycle routes and
 cycleways below zoom 13 are not part of that schema and are therefore not drawn.
 
