@@ -1,0 +1,31 @@
+{
+  "name": "cycling-style",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:sprite": "tsx build/sprite.ts",
+    "build:style": "tsx build/style.ts",
+    "build": "npm run build:sprite && npm run build:style",
+    "sheets": "tsx build/sheets.ts",
+    "dev": "vite",
+    "site": "vite build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@versatiles/style": "9.0.0",
+    "maplibre-gl": "5.24.0"
+  },
+  "devDependencies": {
+    "@maplibre/maplibre-gl-style-spec": "26.5.1",
+    "@types/node": "26.6.6",
+    "@versatiles/png-renderer": "2.5.0",
+    "potpack": "2.1.0",
+    "sharp": "0.35.5",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.6",
+    "vitest": "5.1.0"
+  }
+}

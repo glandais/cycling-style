@@ -1,0 +1,8 @@
+html, body { height: 100%; margin: 0; font: 14px system-ui, sans-serif; }
+body { display: flex; flex-direction: column; }
+#presets { display: flex; gap: 8px; padding: 8px; }
+main { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; min-height: 0; }
+section { position: relative; min-width: 0; }
+h2 { position: absolute; z-index: 2; margin: 8px; padding: 2px 8px; font-size: 13px; background: #fffc; border-radius: 4px; }
+section > .map { position: absolute; inset: 0; }
+button { padding: 4px 10px; cursor: pointer; }
