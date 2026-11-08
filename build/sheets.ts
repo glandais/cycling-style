@@ -53,23 +53,26 @@ const warnings = new Set<string>();
 
 for (const [name, [lon, lat]] of Object.entries(PLACES)) {
 	for (const zoom of ZOOMS) {
-		const render = (mapStyle: object) =>
+		const render = (mapStyle: object, factor = 1) =>
 			renderToPNG({
 				style: mapStyle,
-				width: WIDTH,
-				height: HEIGHT,
+				width: WIDTH * factor,
+				height: HEIGHT * factor,
 				lon,
 				lat,
-				zoom,
+				zoom: zoom + Math.log2(factor),
 				labels: 'glyphs',
 				fetch: cachedFetch,
 				onWarning: (warning: unknown) => warnings.add(String(warning)),
 			} as Parameters<typeof renderToPNG>[0]);
-		const [left, right] = [await render(CYCLOSM), await render(style)];
+		// The renderer draws raster tiles at 512 px whatever their tileSize: rendering twice as large one
+		// zoom higher, then halving, gives 256 px tiles at the same ground scale as the vector map.
+		const left = await sharp(Buffer.from(await render(CYCLOSM, 2))).resize(WIDTH, HEIGHT).png().toBuffer();
+		const right = await render(style);
 		const file = `.cache/sheets/${name}-z${zoom}.png`;
 		await sharp({ create: { width: WIDTH * 2 + 4, height: HEIGHT, channels: 3, background: '#ffffff' } })
 			.composite([
-				{ input: Buffer.from(left), left: 0, top: 0 },
+				{ input: left, left: 0, top: 0 },
 				{ input: Buffer.from(right), left: WIDTH + 4, top: 0 },
 			])
 			.png()
