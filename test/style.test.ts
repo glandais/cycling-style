@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import { osm } from '@versatiles/style';
@@ -41,6 +42,12 @@ describe('generated style', () => {
 
 	it('finds every layer it patches', () => {
 		for (const id of PATCHED_LAYER_IDS) expect(indexOf(id), id).toBeGreaterThanOrEqual(0);
+	});
+
+	it('references exactly the icons of the sprite', () => {
+		const sprite = Object.keys(JSON.parse(readFileSync('public/sprites/cyclo.json', 'utf8')));
+		const used = new Set(JSON.stringify(style.layers).match(/cyclo:[a-z_]+/g)!.map((id) => id.slice(6)));
+		expect([...used].sort()).toEqual([...sprite].sort());
 	});
 
 	it('contains no relief', () => {

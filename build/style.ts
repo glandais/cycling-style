@@ -3,9 +3,19 @@ import { inlineSources, osm } from '@versatiles/style';
 import type { LayerSpecification, StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { osmColors } from './palette.ts';
 import { applyOverrides } from './overrides.ts';
+import { poiLayers } from './pois.ts';
 import { areaLayers, roadLayers } from './roads.ts';
 
 const { belowStreets, belowSymbols } = osm.slots;
+
+/** POIs are drawn under place names but above every other label, as in CyclOSM. */
+const POI_ANCHOR = 'label-place-neighbourhood';
+
+/**
+ * Absolute URL of the sprite. MapLibre requires one; the comparison site replaces it at runtime.
+ * Set SPRITE_URL when publishing `style.json` for use elsewhere.
+ */
+const SPRITE_URL = process.env.SPRITE_URL ?? 'https://example.invalid/sprites/cyclo';
 
 /**
  * Inserts the road stack into the VersaTiles layers. VersaTiles interleaves railways with each road
@@ -21,6 +31,9 @@ export function assembleLayers(layers: LayerSpecification[]): LayerSpecification
 	const bridge = transport.filter((layer) => layer.id.startsWith('bridge-'));
 	const surface = transport.filter((layer) => !tunnel.includes(layer) && !bridge.includes(layer));
 
+	const anchor = layers.findIndex((layer) => layer.id === POI_ANCHOR);
+	if (anchor < end) throw new Error(`Layer ${POI_ANCHOR} not found: check the @versatiles/style version`);
+
 	return [
 		...layers.slice(0, start + 1),
 		...roadLayers('tunnel'),
@@ -30,7 +43,9 @@ export function assembleLayers(layers: LayerSpecification[]): LayerSpecification
 		...surface,
 		...roadLayers('bridge'),
 		...bridge,
-		...layers.slice(end),
+		...layers.slice(end, anchor),
+		...poiLayers(),
+		...layers.slice(anchor),
 	];
 }
 
@@ -44,7 +59,13 @@ export async function buildStyle(): Promise<StyleSpecification> {
 		sky: false,
 		features: { hillshade: false, terrain: false },
 		layers: { roads: false, pois: false, markings: false },
-		urls: { base: 'https://tiles.versatiles.org' },
+		urls: {
+			base: 'https://tiles.versatiles.org',
+			sprite: [
+				{ id: 'base', url: '/assets/sprites/base' },
+				{ id: 'cyclo', url: SPRITE_URL },
+			],
+		},
 	});
 	style.name = 'cycling-style';
 	style.layers = assembleLayers(applyOverrides(style.layers));
