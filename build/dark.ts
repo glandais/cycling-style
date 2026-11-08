@@ -50,11 +50,11 @@ const DARK_COLORS: Record<string, string> = {
 	'#007360': '#2fbf9f',
 	'#7a5b36': '#b08d63',
 	'#114021': '#86c08c',
-	'#4f4fff': '#2f5bb0',
 	'#4d90ff': '#2f7fa8',
 	'#00c0a0': '#1f7f6a',
 	'#dcc3a6': '#6e5a44',
-	'#000068': '#1c2f7a',
+	'#0a8a3a': '#14532d',
+	'#b1ffcb': '#1f6b3f',
 	// Labels and POIs
 	'#ffffff': '#15171a',
 	'#111111': '#e8e8e8',

@@ -35,12 +35,12 @@ export const palette = {
 
 /** Road and path colours from road-colors.mss. */
 export const roadColors = {
-	cycle: '#0000ce',
+	cycle: '#62ff96', // our choice: CyclOSM uses #0000ce
 	mixedCycle: '#0060ff',
 	path: '#007360',
 	footway: '#7a5b36',
 	track: '#114021',
-	cycleTunnel: '#4f4fff', // derived: lighten(cycle, 25%)
+	cycleTunnel: '#b1ffcb',
 	mixedCycleTunnel: '#4d90ff', // derived: lighten(mixedCycle, 15%)
 	pathTunnel: '#00c0a0', // derived: lighten(path, 15%)
 	footwayTunnel: '#dcc3a6',
@@ -62,7 +62,7 @@ export const roadColors = {
 	noMotor: '#62ff96',
 	bridgeCase: '#666666',
 	pedestrianArea: '#dce3e0',
-	cycleSurface: '#000068', // derived: darken(cycle, 20%)
+	cycleSurface: '#0a8a3a',
 	roadSurfaceRough: '#c3c3c3',
 	roadSurfaceBad: '#dcdcdc',
 } as const;
