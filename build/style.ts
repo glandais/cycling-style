@@ -56,7 +56,7 @@ export function assembleLayers(layers: LayerSpecification[]): LayerSpecification
 }
 
 /** Builds the complete cycling style as a MapLibre style object. */
-export async function buildStyle(): Promise<StyleSpecification> {
+export async function buildStyle(spriteUrl = SPRITE_URL): Promise<StyleSpecification> {
 	const style = osm({
 		theme: 'colorful',
 		colors: osmColors,
@@ -69,7 +69,7 @@ export async function buildStyle(): Promise<StyleSpecification> {
 			base: 'https://tiles.versatiles.org',
 			sprite: [
 				{ id: 'base', url: '/assets/sprites/base' },
-				{ id: 'cyclo', url: SPRITE_URL },
+				{ id: 'cyclo', url: spriteUrl },
 			],
 		},
 	});
@@ -79,17 +79,23 @@ export async function buildStyle(): Promise<StyleSpecification> {
 }
 
 /** Builds the dark variant from an already built light style. */
-export function buildDarkStyle(style: StyleSpecification): StyleSpecification {
-	return toDarkStyle(style, `${SPRITE_URL}-dark`);
+export function buildDarkStyle(style: StyleSpecification, spriteUrl = SPRITE_URL): StyleSpecification {
+	return toDarkStyle(style, `${spriteUrl}-dark`);
+}
+
+/** Writes the four style variants into `dir`. */
+export async function writeStyles(dir: string, spriteUrl = SPRITE_URL): Promise<void> {
+	await mkdir(dir, { recursive: true });
+	const style = await buildStyle(spriteUrl);
+	const road = toRoadStyle(style);
+	const roadDark = { ...buildDarkStyle(road, spriteUrl), name: 'cycling-style-road-dark' };
+	await writeFile(`${dir}/style.json`, JSON.stringify(style));
+	await writeFile(`${dir}/style-dark.json`, JSON.stringify(buildDarkStyle(style, spriteUrl)));
+	await writeFile(`${dir}/style-road.json`, JSON.stringify(road));
+	await writeFile(`${dir}/style-road-dark.json`, JSON.stringify(roadDark));
 }
 
 if (import.meta.main) {
-	await mkdir('public', { recursive: true });
-	const style = await buildStyle();
-	await writeFile('public/style.json', JSON.stringify(style));
-	await writeFile('public/style-dark.json', JSON.stringify(buildDarkStyle(style)));
-	const road = toRoadStyle(style);
-	await writeFile('public/style-road.json', JSON.stringify(road));
-	await writeFile('public/style-road-dark.json', JSON.stringify({ ...buildDarkStyle(road), name: 'cycling-style-road-dark' }));
+	await writeStyles('public');
 	console.log('Wrote the four style variants to public/');
 }

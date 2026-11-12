@@ -1,27 +1,70 @@
 {
-  "name": "cycling-style",
+  "name": "@glandais/cycling-style",
   "version": "0.1.0",
-  "private": true,
+  "description": "MapLibre style for VersaTiles vector tiles (Shortbread), inspired by CyclOSM",
   "type": "module",
+  "exports": {
+    ".": "./dist/style.json",
+    "./style.json": "./dist/style.json",
+    "./style-dark.json": "./dist/style-dark.json",
+    "./style-road.json": "./dist/style-road.json",
+    "./style-road-dark.json": "./dist/style-road-dark.json",
+    "./sprites/*": "./dist/sprites/*",
+    "./package.json": "./package.json"
+  },
+  "jsdelivr": "./dist/style.json",
+  "unpkg": "./dist/style.json",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSES.md"
+  ],
   "scripts": {
     "build:sprite": "tsx build/sprite.ts",
     "build:style": "tsx build/style.ts",
     "build": "npm run build:sprite && npm run build:style",
+    "build:package": "tsx build/package.ts",
     "sheets": "tsx build/sheets.ts",
     "dev": "vite",
     "site": "vite build",
     "test": "vitest run --root .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "semantic-release": "semantic-release",
+    "prepublishOnly": "npm run build:package"
   },
-  "dependencies": {
-    "@versatiles/style": "9.1.0",
-    "maplibre-gl": "6.17.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glandais/cycling-style.git"
+  },
+  "keywords": [
+    "maplibre",
+    "maplibre-style",
+    "versatiles",
+    "shortbread",
+    "cycling",
+    "cyclosm",
+    "openstreetmap",
+    "map-style"
+  ],
+  "author": "glandais",
+  "license": "SEE LICENSE IN LICENSES.md",
+  "bugs": {
+    "url": "https://github.com/glandais/cycling-style/issues"
+  },
+  "homepage": "https://glandais.github.io/cycling-style/",
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@maplibre/maplibre-gl-style-spec": "26.6.0",
+    "@semantic-release/changelog": "7.0.0",
+    "@semantic-release/git": "11.0.1",
     "@types/node": "26.6.6",
     "@versatiles/png-renderer": "2.5.0",
+    "@versatiles/style": "9.1.0",
+    "maplibre-gl": "6.17.0",
     "potpack": "2.1.0",
+    "semantic-release": "25.0.9",
     "sharp": "0.35.5",
     "tsx": "4.23.15",
     "typescript": "7.0.2",

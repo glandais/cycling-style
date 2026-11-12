@@ -23,6 +23,19 @@ Other variants are published next to it:
 | Road cycling        | `style-road.json`      | Roads only: paths and tracks barely visible |
 | Road cycling (dark) | `style-road-dark.json` | Road cycling on a dark background           |
 
+The same files are published on npm as
+[`@glandais/cycling-style`](https://www.npmjs.com/package/@glandais/cycling-style):
+
+```sh
+npm install @glandais/cycling-style
+```
+
+```js
+import style from '@glandais/cycling-style/style.json' with { type: 'json' };
+```
+
+The package also contains the sprites in `dist/sprites/`, for self-hosting.
+
 Pass one of these URLs to MapLibre GL JS 5.5 or later. Tiles, fonts and base sprites are served by
 `tiles.versatiles.org`, so no API key is needed.
 
@@ -88,6 +101,9 @@ changing icons. `npm run build:style` works on its own.
 `npm run sheets` renders side-by-side PNG sheets against CyclOSM into `.cache/sheets/`, without a
 browser. It downloads many tiles on its first run.
 
-Pushes to `develop` publish the viewer and the style to GitHub Pages.
+Pushes to `develop` publish the viewer and the style to GitHub Pages. They also release the npm
+package with [semantic-release](https://semantic-release.gitbook.io): the version is derived from
+the [Conventional Commits](https://www.conventionalcommits.org) since the last release (`fix:` is a
+patch, `feat:` a minor), and nothing is released when there is neither.
 
 See [LICENSES.md](LICENSES.md) for licensing and attribution.

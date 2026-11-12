@@ -7,6 +7,6 @@ export default defineConfig({
 	publicDir: '../public',
 	// MapLibre starts its worker as a module.
 	worker: { format: 'es' },
-	build: { outDir: '../dist', emptyOutDir: true },
+	build: { outDir: '../dist-site', emptyOutDir: true },
 	test: { include: ['test/**/*.test.ts'] },
 });
