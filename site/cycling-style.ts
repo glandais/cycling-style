@@ -1,4 +1,8 @@
-import type { StyleSpecification } from 'maplibre-gl';
+import { setWorkerUrl, type StyleSpecification } from 'maplibre-gl';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+
+// MapLibre 6 looks for its worker next to its own module, which no longer exists once bundled.
+setWorkerUrl(workerUrl);
 
 /** Loads a generated style and points its local sprite at this page's own location. */
 export async function loadCyclingStyle(name = 'cycling-style'): Promise<StyleSpecification> {
