@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/glandais/cycling-style/compare/v1.0.0...v1.0.1) (2026-11-12)
+
+
+### Bug Fixes
+
+* rewrite the README for the npm package ([9fbd820](https://github.com/glandais/cycling-style/commit/9fbd8200dda40954e839298d0fc62f6d21b83a13))
+
 # 1.0.0 (2026-11-12)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@glandais/cycling-style",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MapLibre style for VersaTiles vector tiles (Shortbread), inspired by CyclOSM",
   "type": "module",
   "exports": {
