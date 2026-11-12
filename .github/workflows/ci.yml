@@ -24,7 +24,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      - run: npm run build
-      # The generated styles and sprite indexes are committed: fail if they are stale.
-      - run: git diff --exit-code -- 'public/*.json' 'public/sprites/*.json'
+      # The sprite is not rebuilt here: its sources live in the untracked ref/ directory.
+      - run: npm run build:style
+      # The generated styles are committed: fail if they are stale.
+      - run: git diff --exit-code -- 'public/*.json'
       - run: npm run site
