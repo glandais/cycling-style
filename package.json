@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@versatiles/style": "9.1.0",
-    "maplibre-gl": "5.24.0"
+    "maplibre-gl": "6.17.0"
   },
   "devDependencies": {
     "@maplibre/maplibre-gl-style-spec": "26.6.0",
