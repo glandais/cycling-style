@@ -60,15 +60,15 @@
     "@semantic-release/changelog": "7.0.0",
     "@semantic-release/git": "11.0.1",
     "@types/node": "26.6.6",
-    "@versatiles/png-renderer": "2.5.0",
+    "@versatiles/png-renderer": "2.6.0",
     "@versatiles/style": "9.1.0",
-    "maplibre-gl": "6.17.0",
+    "maplibre-gl": "6.18.0",
     "potpack": "2.1.0",
     "semantic-release": "25.0.9",
     "sharp": "0.35.5",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vite": "8.3.7",
+    "vite": "8.3.8",
     "vitest": "5.1.0"
   }
 }
